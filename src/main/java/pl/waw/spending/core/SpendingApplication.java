@@ -1,21 +1,17 @@
 package pl.waw.spending.core;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public enum SpendingApplication {
-
-	INSTANCE;
+public class SpendingApplication {
 	
-	private final ApplicationContext context;
+	private static ApplicationContext context;
 	
-	private SpendingApplication() {
-		AnnotationConfigApplicationContext rootContext = new AnnotationConfigApplicationContext("pl.waw.spending");
-		context = rootContext;
+	static void setSpendingApplicationContext(ApplicationContext context) {
+		SpendingApplication.context = context;
 	}
 	
-	public ApplicationContext getContext() {
-		return context;
+	public static ApplicationContext getContext() {
+		return SpendingApplication.context;
 	}
 	
 }

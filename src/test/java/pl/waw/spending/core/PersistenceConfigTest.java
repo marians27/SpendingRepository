@@ -10,11 +10,26 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
-import pl.waw.spending.core.SpendingApplication;
+import pl.waw.spending.core.config.PersistanceConfig;
 import pl.waw.spending.domain.Category;
 
-public class HibernateConfigurationTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration(
+	classes={PersistanceConfig.class}, 
+	loader=AnnotationConfigContextLoader.class)
+public class PersistenceConfigTest {
+	
+	@Autowired
+    private ApplicationContext context;
 	
 	private List<Long> createdCategoryIds;
 	
@@ -93,6 +108,6 @@ public class HibernateConfigurationTest {
 	}
 
 	private SessionFactory getSessionFactory() {
-		return SpendingApplication.INSTANCE.getContext().getBean(SessionFactory.class);
+		return context.getBean(SessionFactory.class);
 	}
 }
