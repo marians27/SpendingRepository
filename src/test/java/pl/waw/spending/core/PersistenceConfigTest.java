@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import pl.waw.spending.core.config.PersistanceConfig;
@@ -23,9 +22,7 @@ import pl.waw.spending.domain.Category;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(
-	classes={PersistanceConfig.class}, 
-	loader=AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes={PersistanceConfig.class})
 public class PersistenceConfigTest {
 	
 	@Autowired
