@@ -4,4 +4,4 @@ Description: Repository which enables to store your spending.
 
 Technologies: Maven, Hibernate, Spring, HSQLDB
 
-In future it will expose a RESTful API
+RESTful API is exposed using Spring MVC in order to enable managing your spending.

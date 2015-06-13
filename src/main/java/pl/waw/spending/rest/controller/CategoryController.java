@@ -1,16 +1,16 @@
-package pl.waw.spending.rest;
+package pl.waw.spending.rest.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class SpendingController {
+@RequestMapping(value = "/categories")
+public class CategoryController {
 
-	@RequestMapping(value = "/spending", method = RequestMethod.GET)
-	public String spending() {
+	@RequestMapping(method=RequestMethod.GET)
+	public String categories() {
 		//TODO: Provide implementation
-		return "All spending";
+		return "All categories";
 	}
-	
 }

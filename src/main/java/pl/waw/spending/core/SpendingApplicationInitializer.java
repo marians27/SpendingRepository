@@ -31,8 +31,8 @@ public class SpendingApplicationInitializer implements WebApplicationInitializer
 
 	private void addDispatcherServlet(ServletContext servletContext, WebApplicationContext context) {
 		ServletRegistration.Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(context));
-        servlet.setLoadOnStartup(1);
-        servlet.addMapping("/");
+		servlet.setLoadOnStartup(1);
+		servlet.addMapping("/");
 	}
 
 }
