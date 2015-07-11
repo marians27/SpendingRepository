@@ -9,9 +9,14 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
+		<driver>org.hsqldb.jdbcDriver</driver>
+		<url>jdbc:hsqldb:file:./target/spending;hsqldb.lock_file=false</url>
+		<username>SPENDING_DB</username>
+		<password></password>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
 		<jackson.version>2.5.4</jackson.version>
+		<hsqldb.version>2.3.2</hsqldb.version>
 	</properties>
 
 	<dependencies>
@@ -33,9 +38,14 @@
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.3.2</version>
+			<version>${hsqldb.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -69,17 +79,108 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.8.0.RELEASE</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
 		<!-- Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>db-gen</id>
+			<activation>
+				<property>
+					<name>dev</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- run "mvn hibernate4:export" to generate a schema -->
+						<groupId>de.juplo</groupId>
+						<artifactId>hibernate4-maven-plugin</artifactId>
+						<version>1.1.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>export</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>db-load</id>
+			<activation>
+				<property>
+					<name>dev</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- mvn sql:execute -->
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>sql-maven-plugin</artifactId>
+						<version>1.5</version>
+						<dependencies>
+							<dependency>
+								<groupId>org.hsqldb</groupId>
+								<artifactId>hsqldb</artifactId>
+								<version>${hsqldb.version}</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<driver>${driver}</driver>
+							<url>${url}</url>
+							<username>${username}</username>
+							<password>${password}</password>
+							<skip>${maven.test.skip}</skip>
+						</configuration>
+						<executions>
+							<execution>
+								<id>insert-data</id>
+								<phase>test</phase>
+								<goals>
+									<goal>execute</goal>
+								</goals>
+								<configuration>
+									<orderFile>ascending</orderFile>
+									<autocommit>true</autocommit>
+									<fileset>
+										<basedir>${basedir}</basedir>
+										<includes>
+											<include>src/main/resources/dictionary/categoryDictionary.sql</include>
+											<include>src/main/resources/dictionary/sampleUsers.sql</include>
+										</includes>
+									</fileset>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<build>
 		<finalName>SpendingRepository</finalName>
 		<plugins>
@@ -101,17 +202,14 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<!-- run "mvn hibernate4:export" to generate a schema -->
-				<groupId>de.juplo</groupId>
-				<artifactId>hibernate4-maven-plugin</artifactId>
-				<version>1.1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>export</goal>
-						</goals>
-					</execution>
-				</executions>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>TomcatServer</server>
+					<path></path>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

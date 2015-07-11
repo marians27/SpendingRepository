@@ -1,6 +1,7 @@
 package pl.waw.spending.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,9 +24,11 @@ public class ExpenseItem {
 	
 	private BigDecimal amount;
 	
+	private LocalDate creationDate;
+	
 	@ManyToOne
 	@JoinColumn
-	private ExpenseSource source;
+	private Spender spender;
 
 	public Category getCategory() {
 		return category;
@@ -51,11 +54,20 @@ public class ExpenseItem {
 		this.amount = amount;
 	}
 
-	public ExpenseSource getSource() {
-		return source;
+	public Spender getSpender() {
+		return spender;
 	}
 
-	public void setSource(ExpenseSource source) {
-		this.source = source;
+	public void setSpender(Spender spender) {
+		this.spender = spender;
 	}
+
+	public LocalDate getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDate creationDate) {
+		this.creationDate = creationDate;
+	}
+	
 }

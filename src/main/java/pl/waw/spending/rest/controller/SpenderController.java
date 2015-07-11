@@ -7,20 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.waw.spending.domain.Category;
-import pl.waw.spending.repository.CategoryRepository;
-
 import com.google.common.collect.Lists;
 
-@RestController
-@RequestMapping(value = "/categories")
-public class CategoryController {
+import pl.waw.spending.domain.Spender;
+import pl.waw.spending.repository.SpenderRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+@RestController
+@RequestMapping(value = "/spenders")
+public class SpenderController {
 	
-	@RequestMapping(method=RequestMethod.GET)
-	public List<Category> categories() {
-		return Lists.newArrayList(categoryRepository.findAll());
+	@Autowired
+	private SpenderRepository spenderRepository;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public List<Spender> spenders() {
+		return Lists.newArrayList(spenderRepository.findAll());
 	}
+
 }

@@ -10,21 +10,26 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 import pl.waw.spending.core.config.PersistanceConfig;
+import pl.waw.spending.core.config.RepositoryConfig;
+import pl.waw.spending.core.config.SpendingApplicationConfig;
 import pl.waw.spending.core.config.WebConfig;
 
 public class SpendingApplicationInitializer implements WebApplicationInitializer {
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		WebApplicationContext context = createWebApplicationContext(servletContext);
+		AnnotationConfigWebApplicationContext context = createWebApplicationContext(servletContext);
 		addDispatcherServlet(servletContext, context);
 		SpendingApplication.setSpendingApplicationContext(context);
+		// Publish ContextStartedEvent
+		context.refresh();
+		context.start();
 		
 	}
 
-	private WebApplicationContext createWebApplicationContext(ServletContext servletContext) {
+	private AnnotationConfigWebApplicationContext createWebApplicationContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.register(PersistanceConfig.class, WebConfig.class);
+		context.register(SpendingApplicationConfig.class, PersistanceConfig.class, RepositoryConfig.class, WebConfig.class);
 		context.setServletContext(servletContext);
 		return context;
 	}
