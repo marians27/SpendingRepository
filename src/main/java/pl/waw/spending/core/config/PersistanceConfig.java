@@ -22,6 +22,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource("classpath:hibernate.properties")
 public class PersistanceConfig {
 	
+	private static final String[] HBM_PACKAGES_TO_SCAN = new String[] {
+		"pl.waw.spending.domain", "pl.waw.spending.hibernate"};
+	
 	@Value("${hibernate.connection.driver_class}")
 	private String driverClassName;
 	
@@ -48,7 +51,7 @@ public class PersistanceConfig {
     public LocalSessionFactoryBean sessionFactoryBean() {
     	LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource());
-        sessionFactoryBean.setPackagesToScan(new String[] {"pl.waw.spending.domain"});
+        sessionFactoryBean.setPackagesToScan(HBM_PACKAGES_TO_SCAN);
         return sessionFactoryBean;
     }
     
@@ -56,7 +59,7 @@ public class PersistanceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
     	LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "pl.waw.spending.domain" });
+        em.setPackagesToScan(HBM_PACKAGES_TO_SCAN);
    
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);

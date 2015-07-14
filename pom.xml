@@ -170,7 +170,7 @@
 										<basedir>${basedir}</basedir>
 										<includes>
 											<include>src/main/resources/dictionary/categoryDictionary.sql</include>
-											<include>src/main/resources/dictionary/sampleUsers.sql</include>
+											<include>src/main/resources/sample/sampleData.sql</include>
 										</includes>
 									</fileset>
 								</configuration>
