@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pl.waw.spending.domain.ExpenseItem;
 import pl.waw.spending.repository.SpendingRepository;
+import pl.waw.spending.rest.resources.ExpenseItemResource;
+import pl.waw.spending.rest.resources.converter.ExpenseItemResourceConverter;
 
 @RestController
 @RequestMapping(value = "/spending/date")
@@ -22,30 +24,34 @@ public class SpendingByDateController {
 	private static final String YEAR_MONTH = YEAR + "/{month:0[1-9]|1[012]}";
 	private static final String YEAR_MONTH_DAY = YEAR_MONTH + "/{day:0[1-9]|[1-2][0-9]|3[0-1]}";
 	
+	private ExpenseItemResourceConverter expenseItemResourceConverter = new ExpenseItemResourceConverter();
+	
 	@Autowired
 	private SpendingRepository spendingRepository;
 	
 	@RequestMapping(value = YEAR, method = RequestMethod.GET)
-	public List<ExpenseItem> spendingByYear(@PathVariable String year) {
+	public List<ExpenseItemResource> spendingByYear(@PathVariable String year) {
 		LocalDate startDate = LocalDate.of(Integer.valueOf(year), Month.JANUARY, 1);
 		LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfYear());
-
-		return spendingRepository.findByCreationDateBetween(startDate, endDate);
+		List<ExpenseItem> espenseItems = spendingRepository.findByCreationDateBetween(startDate, endDate);
+		return expenseItemResourceConverter.convertToResources(espenseItems);
 	}
 	
 	@RequestMapping(value = YEAR_MONTH, method = RequestMethod.GET)
-	public List<ExpenseItem> spendingByYearAndMonth(@PathVariable String year, @PathVariable String month) {
+	public List<ExpenseItemResource> spendingByYearAndMonth(@PathVariable String year, @PathVariable String month) {
 		LocalDate startDate = LocalDate.of(Integer.valueOf(year), Integer.valueOf(month), 1);
 		LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
 		
-		return spendingRepository.findByCreationDateBetween(startDate, endDate);
+		List<ExpenseItem> espenseItems = spendingRepository.findByCreationDateBetween(startDate, endDate);
+		return expenseItemResourceConverter.convertToResources(espenseItems);
 	}
 	
 	@RequestMapping(value = YEAR_MONTH_DAY, method = RequestMethod.GET)
-	public List<ExpenseItem> spendingByYeardMonthAndDay(@PathVariable String year, @PathVariable String month, @PathVariable String day) {
+	public List<ExpenseItemResource> spendingByYeardMonthAndDay(@PathVariable String year, @PathVariable String month, @PathVariable String day) {
 		LocalDate dayDate = LocalDate.of(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
 		
-		return spendingRepository.findByCreationDate(dayDate);
+		List<ExpenseItem> espenseItems = spendingRepository.findByCreationDate(dayDate);
+		return expenseItemResourceConverter.convertToResources(espenseItems);
 	}
 
 }

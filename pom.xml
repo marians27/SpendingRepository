@@ -15,7 +15,7 @@
 		<password></password>
 		<spring.version>4.1.6.RELEASE</spring.version>
 		<hibernate.version>4.3.10.Final</hibernate.version>
-		<jackson.version>2.5.4</jackson.version>
+		<jackson.version>2.6.0</jackson.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 	</properties>
 
@@ -84,6 +84,11 @@
 			<version>1.8.0.RELEASE</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+			<version>0.17.0.RELEASE</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
@@ -92,6 +97,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>

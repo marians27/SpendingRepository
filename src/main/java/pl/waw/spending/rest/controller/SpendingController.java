@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pl.waw.spending.domain.ExpenseItem;
 import pl.waw.spending.repository.SpendingRepository;
+import pl.waw.spending.rest.resources.ExpenseItemResource;
+import pl.waw.spending.rest.resources.converter.ExpenseItemResourceConverter;
 
 import com.google.common.collect.Lists;
 
@@ -25,12 +27,15 @@ public class SpendingController {
 	
 	private static final String ID_PATH_PATTERN = "/{id:\\d+}";
 	
+	private ExpenseItemResourceConverter expenseItemResourceConverter = new ExpenseItemResourceConverter();
+
 	@Autowired
 	private SpendingRepository spendingRepository;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public List<ExpenseItem> spending() {
-		return Lists.newArrayList(spendingRepository.findAll());
+	public List<ExpenseItemResource> spending() {
+		List<ExpenseItem> expenseItems = Lists.newArrayList(spendingRepository.findAll());
+		return expenseItemResourceConverter.convertToResources(expenseItems);
 	}
 	
 	@RequestMapping(value = ID_PATH_PATTERN, method = RequestMethod.GET)
