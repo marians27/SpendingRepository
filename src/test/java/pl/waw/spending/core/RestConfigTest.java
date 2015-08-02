@@ -13,11 +13,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import pl.waw.spending.core.config.PersistanceConfig;
+import pl.waw.spending.core.config.RepositoryConfig;
 import pl.waw.spending.core.config.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes={PersistanceConfig.class, WebConfig.class})
+@ContextConfiguration(classes={PersistanceConfig.class, RepositoryConfig.class, WebConfig.class})
 public class RestConfigTest {
 	
 	@Autowired
