@@ -10,7 +10,7 @@
 
 	<properties>
 		<driver>org.hsqldb.jdbcDriver</driver>
-		<url>jdbc:hsqldb:file:./target/spending;hsqldb.lock_file=false</url>
+		<url>jdbc:hsqldb:file:/HSQLDB/Spending/spending;hsqldb.lock_file=false</url>
 		<username>SPENDING_DB</username>
 		<password></password>
 		<spring.version>4.1.6.RELEASE</spring.version>
@@ -202,6 +202,7 @@
 									<fileset>
 										<basedir>${basedir}</basedir>
 										<includes>
+											<include>src/main/resources/cleanup/cleanup.sql</include>
 											<include>src/main/resources/dictionary/categoryDictionary.sql</include>
 											<include>src/main/resources/sample/sampleData.sql</include>
 										</includes>
